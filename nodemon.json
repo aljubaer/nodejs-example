@@ -1,5 +1,0 @@
-{
-    "env": {
-        "ATLAS_PASSWORD": "mongopassword"
-    }
-}

@@ -5,13 +5,14 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const expressPublicIp = require('express-public-ip');
 
 const productsRoute = require('./api/routes/products');
 const ordersRoute = require('./api/routes/orders');
 
 // Connect to mongo
-mongoose.connect('mongodb://aljubaer:atlas0812@shop-api-shard-00-00-x3byg.mongodb.net:27017,shop-api-shard-00-01-x3byg.mongodb.net:27017,shop-api-shard-00-02-x3byg.mongodb.net:27017/test?ssl=true&replicaSet=shop-api-shard-0&authSource=admin&retryWrites=true', {
-    useNewUrlParser: true 
+mongoose.connect('mongodb://aljubaer:'+ process.env.ATLAS_PASSWORD +'@shop-api-shard-00-00-x3byg.mongodb.net:27017,shop-api-shard-00-01-x3byg.mongodb.net:27017,shop-api-shard-00-02-x3byg.mongodb.net:27017/test?ssl=true&replicaSet=shop-api-shard-0&authSource=admin&retryWrites=true', {
+    useNewUrlParser: true
 });
 
 mongoose.Promise = global.Promise;
@@ -21,7 +22,11 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
     extended: false,
 }));
+app.enable('trust proxy');
+
+app.use(expressPublicIp());
 app.use(bodyParser.json());
+app.set('trust proxy', true)
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
