@@ -19,6 +19,7 @@ mongoose.Promise = global.Promise;
 
 // Logging all request in console using morgan
 app.use(morgan('dev'));
+app.use('/uploads' + express.static('uploads'));
 app.use(bodyParser.urlencoded({
     extended: false,
 }));
