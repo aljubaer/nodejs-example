@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/aljubaer/shop-api#readme",
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-ip": "^1.0.3",
