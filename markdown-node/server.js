@@ -3,15 +3,25 @@ const app = express();
 const mongoose = require('mongoose');
 const articleRouter = require('./routes/articles');
 
+const PORT = 5001;
+
 mongoose.connect('mongodb://localhost/blog', {
     useNewUrlParser: true,
     useUnifiedTopology: true
+}, (err, connection) => {
+    if(err) {
+        console.error(err)
+        return
+    }
+    console.log('Connected to DB');
+    app.listen({ port: PORT }, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    }) 
 })
 
 app.set('view engine', 'ejs');
-
-app.use('/articles', articleRouter);
 app.use(express.urlencoded({ extended: false }));
+
 
 app.get('/', (req, res) => {
     const articles = [{
@@ -22,7 +32,5 @@ app.get('/', (req, res) => {
     res.render('index', {articles : articles});
 });
 
-app.listen(5000);
-
-
-// 16:15
+app.use('/articles', articleRouter);
+// app.listen(5000);
